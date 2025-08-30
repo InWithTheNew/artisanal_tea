@@ -1,0 +1,10 @@
+.commandbar-field {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  box-sizing: border-box;
+}
