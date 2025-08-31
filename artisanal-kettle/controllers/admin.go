@@ -3,7 +3,6 @@ package controllers
 import (
 	"artisanal-kettle/internal/service"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -29,7 +28,6 @@ func SubmitNewService(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Invalid request"))
 		return
 	}
-	fmt.Printf("%+v\n", s)
 
 	err = s.SubmitNewServiceConfig()
 	if err != nil {
@@ -61,7 +59,6 @@ func DeleteService(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Invalid request"))
 		return
 	}
-	fmt.Printf("%+v\n", s)
 
 	err = s.DeleteServiceConfig()
 	if err != nil {
