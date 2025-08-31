@@ -118,7 +118,7 @@ func SendArtisanCommandToServer(host string, cmd string) (string, error) {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
-	client, err := ssh.Dial("tcp", host, config)
+	client, err := ssh.Dial("tcp", host+":22", config)
 	if err != nil {
 		return "", err
 	}
@@ -128,6 +128,8 @@ func SendArtisanCommandToServer(host string, cmd string) (string, error) {
 		return "", err
 	}
 	defer session.Close()
-	output, err := session.CombinedOutput("php artisan " + cmd)
+
+	cleansedCommand := strings.Split(cmd, ";")[0]
+	output, err := session.CombinedOutput("php artisan " + cleansedCommand)
 	return string(output), err
 }

@@ -5,6 +5,7 @@ import (
 	"artisanal-kettle/internal/model"
 	"artisanal-kettle/internal/store"
 	"context"
+	"log"
 )
 
 // Service is a concrete implementation of model.ServiceModel, representing a deployable service.
@@ -34,8 +35,8 @@ func New() *Service {
 // SubmitNewServiceConfig saves the current service configuration to the Redis store.
 func (s *Service) SubmitNewServiceConfig() error {
 	ctx := context.Background()
-	redis := store.GetRedisClient()
-	ctn := store.NewServiceStore(redis)
+	state := store.GetStoreClient()
+	ctn := store.NewServiceStore(state)
 
 	err := ctn.SaveService(ctx, s)
 
@@ -43,18 +44,22 @@ func (s *Service) SubmitNewServiceConfig() error {
 		return err
 	}
 
+	log.Printf("new service submitted: %s", s.Name)
+
 	return nil
 }
 
 func (s *Service) DeleteServiceConfig() error {
 	ctx := context.Background()
-	redis := store.GetRedisClient()
-	ctn := store.NewServiceStore(redis)
+	state := store.GetStoreClient()
+	ctn := store.NewServiceStore(state)
 
 	err := ctn.DeleteService(ctx, s)
 	if err != nil {
 		return err
 	}
+
+	log.Printf("service deleted: %s", s.Name)
 
 	return nil
 }
@@ -62,7 +67,7 @@ func (s *Service) DeleteServiceConfig() error {
 // SubmitCommand retrieves a service by name and sends a command to it using the action package.
 func SubmitCommand(svcName, cmd string) (string, error) {
 
-	svc, err := GetSvc(svcName)
+	svc, err := GetService(svcName)
 	if err != nil {
 		return "", err
 	}
@@ -73,15 +78,17 @@ func SubmitCommand(svcName, cmd string) (string, error) {
 		return "", err
 	}
 
+	log.Printf("command send to service %s: %s", svcName, cmd)
+
 	return resp, nil
 }
 
-// GetSvc retrieves a service from the store by its name.
-func GetSvc(svcName string) (*Service, error) {
+// GetService retrieves a service from the store by its name.
+func GetService(svcName string) (*Service, error) {
 
 	ctx := context.Background()
-	redis := store.GetRedisClient()
-	r := store.NewServiceStore(redis)
+	state := store.GetStoreClient()
+	r := store.NewServiceStore(state)
 
 	svc := &Service{}
 	err := r.GetService(ctx, svcName, svc)
