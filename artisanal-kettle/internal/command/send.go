@@ -21,6 +21,8 @@ func Send(svc ServiceModel, cmd string) (string, error) {
 	var response string
 	var err error
 
+	cmd = cleanCommand(cmd)
+
 	switch svc.GetKubernetesCheck() {
 	case true:
 		// If the service is on Kubernetes, exec the command in a pod
@@ -129,7 +131,20 @@ func SendArtisanCommandToServer(host string, cmd string) (string, error) {
 	}
 	defer session.Close()
 
-	cleansedCommand := strings.Split(cmd, ";")[0]
-	output, err := session.CombinedOutput("php artisan " + cleansedCommand)
+	output, err := session.CombinedOutput("php artisan " + cmd)
 	return string(output), err
+}
+
+func cleanCommand(cmd string) string {
+
+	strings.ToLower(cmd)
+	// Some attempt at preventing cmd injection.
+	cleansedCommand := strings.Split(cmd, ";")[0]
+	cleansedCommand = strings.Split(cleansedCommand, "&")[0]
+
+	if strings.Contains(cleansedCommand, "php artisan") {
+		cleansedCommand = strings.Replace(cleansedCommand, "php artisan ", "", -1)
+	}
+
+	return cleansedCommand
 }
