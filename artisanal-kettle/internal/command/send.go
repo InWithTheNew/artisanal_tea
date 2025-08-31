@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -22,6 +23,7 @@ func Send(svc ServiceModel, cmd string) (string, error) {
 	var err error
 
 	cmd = cleanCommand(cmd)
+	log.Printf("command submitted to %s: %s. Host: %s", svc.GetName(), cmd, svc.GetServer())
 
 	switch svc.GetKubernetesCheck() {
 	case true:
@@ -135,6 +137,7 @@ func SendArtisanCommandToServer(host string, cmd string) (string, error) {
 	return string(output), err
 }
 
+// Try to format the cmd input. Prevent cmd injection, add or dedup 'php artisan'.
 func cleanCommand(cmd string) string {
 
 	strings.ToLower(cmd)

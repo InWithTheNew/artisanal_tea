@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  redis:
+    image: docker.io/library/redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  kettle:
+    build:
+      context: ./artisanal-kettle
+      dockerfile: Containerfile
+    container_name: kettle
+    depends_on:
+      - redis
+    environment:
+      REDIS_HOST: redis
+      SSH_USER: kettle
+      # SSH_KEY should be set here or via a .env file (use a real key in production)
+      SSH_KEY: "YOUR_PRIVATE_KEY_HERE"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  tea:
+    build:
+      context: ./artisanal-tea
+      dockerfile: Containerfile
+    container_name: tea
+    depends_on:
+      - kettle
+    environment:
+      REACT_APP_BACKEND_URL: http://kettle:8080
+      REACT_APP_LIST_APPS_PATH: /list/services
+      REACT_APP_SUBMIT_PATH: /submit
+    ports:
+      - "3000:80"
+    restart: unless-stopped

@@ -22,6 +22,7 @@ require (
 	github.com/go-openapi/spec v0.20.6 // indirect
 	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/gnostic-models v0.7.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
@@ -67,5 +68,6 @@ require (
 	github.com/redis/go-redis/v9 v9.12.1
 	github.com/swaggo/http-swagger v1.3.4
 	golang.org/x/crypto v0.41.0
+	google.golang.org/appengine v1.6.8
 	k8s.io/client-go v0.34.0
 )
