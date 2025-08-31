@@ -1,0 +1,116 @@
+name: Build, Scan, and Push Docker Images
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-scan-push-kettle:
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY: docker.io
+      COMMIT_TAG: ${{ github.sha }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build kettle image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./artisanal-kettle
+          file: ./artisanal-kettle/Containerfile
+          push: false
+          load: true
+          tags: |
+            ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:${{ env.COMMIT_TAG }}
+            ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:latest
+
+      - name: Scan kettle image for vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:${{ env.COMMIT_TAG }}
+
+      - name: Push kettle image (commit tag)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./artisanal-kettle
+          file: ./artisanal-kettle/Containerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:${{ env.COMMIT_TAG }}
+
+      - name: Push kettle image (latest tag, only on main)
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./artisanal-kettle
+          file: ./artisanal-kettle/Containerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:latest
+
+  build-scan-push-tea:
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY: docker.io
+      COMMIT_TAG: ${{ github.sha }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build tea image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./artisanal-tea
+          file: ./artisanal-tea/Containerfile
+          push: false
+          load: true
+          tags: |
+            ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-tea:${{ env.COMMIT_TAG }}
+            ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-tea:latest
+
+      - name: Scan tea image for vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-tea:${{ env.COMMIT_TAG }}
+
+      - name: Push tea image (commit tag)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./artisanal-tea
+          file: ./artisanal-tea/Containerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-tea:${{ env.COMMIT_TAG }}
+
+      - name: Push tea image (latest tag, only on main)
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./artisanal-tea
+          file: ./artisanal-tea/Containerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-tea:latest

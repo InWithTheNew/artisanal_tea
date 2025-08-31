@@ -1,0 +1,107 @@
+definitions:
+  controllers.payload:
+    properties:
+      command:
+        description: Command to execute on the service
+        type: string
+      name:
+        description: Name of the service to target
+        type: string
+    type: object
+  service.Service:
+    properties:
+      isKubernetes:
+        description: Whether the service is deployed on Kubernetes
+        type: boolean
+      name:
+        description: The name of the service
+        type: string
+      server:
+        description: The server address for the service
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/submit:
+    post:
+      consumes:
+      - application/json
+      description: Deletes a service configuration in the system
+      parameters:
+      - description: Service definition
+        in: body
+        name: service
+        required: true
+        schema:
+          $ref: '#/definitions/service.Service'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+      summary: Deletes a new service
+      tags:
+      - admin
+  /list/services:
+    get:
+      description: Returns a list of all registered service names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "500":
+          description: Error listing services
+          schema:
+            type: string
+      summary: List all service names
+      tags:
+      - services
+  /submit:
+    post:
+      consumes:
+      - application/json
+      description: Submits a command to the specified service and returns the result
+      parameters:
+      - description: Command payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.payload'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Submit a command to a service
+      tags:
+      - commands
+swagger: "2.0"
