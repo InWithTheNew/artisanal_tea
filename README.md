@@ -98,8 +98,8 @@ kubectl apply -f https://raw.githubusercontent.com/<your-username>/<your-repo>/m
 ## TODO
 
 - Implement authentication and authorisation
-- Make services catalogue readable from a repository config file, rather than just REDIS. Make toggleable.
-- Will PHP artisan ever need interactive input? How would we implement that.
+- Make services catalogue readable from a repository config file, rather than just Redis. Make toggleable.
+- Will PHP artisan ever need interactive input? How would we implement that?
 - Write a proper PHP interface framework - this seems overkill but the I'm not a fan of the implementation of how we're interacting with the remote endpoints.
 ---
 ## License
