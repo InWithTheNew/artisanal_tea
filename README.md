@@ -26,7 +26,7 @@ You can run the entire stack (frontend, backend, and Redis) using Podman Compose
 From the root of this repository, run:
 
 ```sh
-podman-compose -f podman-compose.example.yaml up --build
+podman-compose -f podman-compose.yaml up --build
 ```
 
 This will:
@@ -52,9 +52,39 @@ podman rm redis kettle tea
 
 ---
 
+## Running on Kubernetes
+
+You can deploy the entire stack to Kubernetes using the provided manifest.
+
+### 1. Prerequisites
+- A running Kubernetes cluster (local or cloud)
+- `kubectl` configured to access your cluster
+
+### 2. Deploy the stack
+
+From the root of this repository, run:
+
+```sh
+kubectl apply -f artisanal-stack.yaml
+```
+
+Or, to pull directly from GitHub (replace with your repo URL):
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/<your-username>/<your-repo>/main/artisanal-stack.yaml
+```
+
+### 3. Notes
+- Edit `artisanal-stack.yaml` to set your Docker Hub username and base64-encoded SSH key.
+- Services are deployed in the `artisanal` namespace.
+- Expose the `tea` or `kettle` service with a LoadBalancer or Ingress for external access if needed.
+
+---
+
 ## Environment Variables
 
-- The compose file sets up all required environment variables for each service, other than ssh keys. Only use them in plaintext for tests / non prod environments.
+- The compose file and manifest set up all required environment variables for each service.
+- For sensitive values (like SSH keys), you may want to use a `.env` file or secrets manager.
 
 ---
 
@@ -64,6 +94,7 @@ podman rm redis kettle tea
 - **Frontend:** See [`artisanal-tea/README.md`](artisanal-tea/README.md) for frontend-specific details.
 
 ---
+
 ## TODO
 
 - Implement authentication and authorisation
