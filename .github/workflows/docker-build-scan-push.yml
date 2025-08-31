@@ -36,6 +36,7 @@ jobs:
           context: ./artisanal-kettle
           file: ./artisanal-kettle/Containerfile
           push: false
+          load: true
           tags: |
             ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:${{ env.COMMIT_TAG }}
             ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:latest
