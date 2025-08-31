@@ -37,13 +37,13 @@ jobs:
           file: ./artisanal-kettle/Containerfile
           push: false
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository }}-kettle:${{ env.COMMIT_TAG }}
-            ${{ env.REGISTRY }}/${{ github.repository }}-kettle:latest
+            ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-kettle:${{ env.COMMIT_TAG }}
+            ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-kettle:latest
 
       - name: Scan kettle image for vulnerabilities
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ github.repository }}-kettle:${{ env.COMMIT_TAG }}
+          image-ref: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-kettle:${{ env.COMMIT_TAG }}
 
       - name: Push kettle image (commit tag)
         uses: docker/build-push-action@v5
@@ -51,7 +51,7 @@ jobs:
           context: ./artisanal-kettle
           file: ./artisanal-kettle/Containerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}-kettle:${{ env.COMMIT_TAG }}
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-kettle:${{ env.COMMIT_TAG }}
 
       - name: Push kettle image (latest tag, only on main)
         if: github.ref == 'refs/heads/main'
@@ -60,7 +60,7 @@ jobs:
           context: ./artisanal-kettle
           file: ./artisanal-kettle/Containerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}-kettle:latest
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-kettle:latest
 
       # Build, scan, and push artisanal-tea
       - name: Build tea image
@@ -70,13 +70,13 @@ jobs:
           file: ./artisanal-tea/Containerfile
           push: false
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository }}-tea:${{ env.COMMIT_TAG }}
-            ${{ env.REGISTRY }}/${{ github.repository }}-tea:latest
+            ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-tea:${{ env.COMMIT_TAG }}
+            ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-tea:latest
 
       - name: Scan tea image for vulnerabilities
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ github.repository }}-tea:${{ env.COMMIT_TAG }}
+          image-ref: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-tea:${{ env.COMMIT_TAG }}
 
       - name: Push tea image (commit tag)
         uses: docker/build-push-action@v5
@@ -84,7 +84,7 @@ jobs:
           context: ./artisanal-tea
           file: ./artisanal-tea/Containerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}-tea:${{ env.COMMIT_TAG }}
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-tea:${{ env.COMMIT_TAG }}
 
       - name: Push tea image (latest tag, only on main)
         if: github.ref == 'refs/heads/main'
@@ -93,4 +93,4 @@ jobs:
           context: ./artisanal-tea
           file: ./artisanal-tea/Containerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}-tea:latest
+          tags: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.repository }}-tea:latest
