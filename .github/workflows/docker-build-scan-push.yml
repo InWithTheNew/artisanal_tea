@@ -70,6 +70,7 @@ jobs:
           context: ./artisanal-tea
           file: ./artisanal-tea/Containerfile
           push: false
+          load: true
           tags: |
             ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-tea:${{ env.COMMIT_TAG }}
             ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-tea:latest
