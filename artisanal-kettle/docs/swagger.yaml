@@ -27,7 +27,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Registers a new service configuration in the system
+      description: Deletes a service configuration in the system
       parameters:
       - description: Service definition
         in: body
@@ -46,7 +46,7 @@ paths:
           description: Invalid request
           schema:
             type: string
-      summary: Register a new service
+      summary: Deletes a new service
       tags:
       - admin
   /list/services:

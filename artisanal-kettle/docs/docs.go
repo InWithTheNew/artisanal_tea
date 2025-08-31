@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/admin/submit": {
             "post": {
-                "description": "Registers a new service configuration in the system",
+                "description": "Deletes a service configuration in the system",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,7 +27,7 @@ const docTemplate = `{
                 "tags": [
                     "admin"
                 ],
-                "summary": "Register a new service",
+                "summary": "Deletes a new service",
                 "parameters": [
                     {
                         "description": "Service definition",

@@ -38,7 +38,7 @@ func SubmitNewService(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// SubmitNewService godoc
+// DeleteService godoc
 // @Summary      Deletes a new service
 // @Description  Deletes a service configuration in the system
 // @Tags         admin
@@ -47,7 +47,7 @@ func SubmitNewService(w http.ResponseWriter, r *http.Request) {
 // @Param        service  body  service.Service  true  "Service definition"
 // @Success      200  {string}  string  "OK"
 // @Failure      400  {string}  string  "Invalid request"
-// @Router       /admin/submit [post]
+// @Router       /admin/delete [post]
 func DeleteService(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var s service.Service
