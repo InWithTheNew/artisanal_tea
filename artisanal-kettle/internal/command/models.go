@@ -1,4 +1,4 @@
-package command_setter
+package command
 
 // StoreService is a legacy struct for services with nested environment info.
 type StoreService struct {

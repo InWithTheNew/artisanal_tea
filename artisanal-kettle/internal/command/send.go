@@ -1,4 +1,4 @@
-package command_setter
+package command
 
 import (
 	"bytes"

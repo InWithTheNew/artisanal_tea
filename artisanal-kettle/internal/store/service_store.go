@@ -52,6 +52,11 @@ func (r *RedisServiceStore) SaveService(ctx context.Context, s model.ServiceMode
 	return r.client.Set(ctx, s.GetName(), data, 0).Err()
 }
 
+// Deletes service from backend store.
+func (r *RedisServiceStore) DeleteService(ctx context.Context, s model.ServiceModel) error {
+	return r.client.Del(ctx, s.GetName()).Err()
+}
+
 // GetService retrieves a service by name and unmarshals it into the provided output struct.
 // Note: The caller must pass a pointer to the correct concrete type for unmarshalling
 func (r *RedisServiceStore) GetService(ctx context.Context, name string, out model.ServiceModel) error {

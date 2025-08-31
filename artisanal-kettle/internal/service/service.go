@@ -1,7 +1,7 @@
 package service
 
 import (
-	action "artisanal-kettle/internal/command"
+	"artisanal-kettle/internal/command"
 	"artisanal-kettle/internal/model"
 	"artisanal-kettle/internal/store"
 	"context"
@@ -46,6 +46,19 @@ func (s *Service) SubmitNewServiceConfig() error {
 	return nil
 }
 
+func (s *Service) DeleteServiceConfig() error {
+	ctx := context.Background()
+	redis := store.GetRedisClient()
+	ctn := store.NewServiceStore(redis)
+
+	err := ctn.DeleteService(ctx, s)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // SubmitCommand retrieves a service by name and sends a command to it using the action package.
 func SubmitCommand(svcName, cmd string) (string, error) {
 
@@ -54,7 +67,7 @@ func SubmitCommand(svcName, cmd string) (string, error) {
 		return "", err
 	}
 
-	resp, err := action.Send(svc, cmd)
+	resp, err := command.Send(svc, cmd)
 
 	if err != nil {
 		return "", err

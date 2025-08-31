@@ -41,6 +41,7 @@ func main() {
 
 	// Admin handlers
 	r.HandleFunc("/admin/submit", withCORS(controllers.SubmitNewService)).Methods("POST")
+	r.HandleFunc("/admin/delete", withCORS(controllers.DeleteService)).Methods("POST")
 
 	// Docs
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
