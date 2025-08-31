@@ -41,7 +41,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ github.repository }}-kettle:latest
 
       - name: Scan kettle image for vulnerabilities
-        uses: aquasecurity/trivy-action@v0.16.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           image-ref: ${{ env.REGISTRY }}/${{ github.repository }}-kettle:${{ env.COMMIT_TAG }}
 
