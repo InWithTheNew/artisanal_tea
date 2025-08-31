@@ -64,7 +64,13 @@ podman rm redis kettle tea
 - **Frontend:** See [`artisanal-tea/README.md`](artisanal-tea/README.md) for frontend-specific details.
 
 ---
+## TODO
 
+- Implement authentication and authorisation
+- Make services catalogue readable from a repository config file, rather than just REDIS. Make toggleable.
+- Will PHP artisan ever need interactive input? How would we implement that.
+- Write a proper PHP interface framework - this seems overkill but the I'm not a fan of the implementation of how we're interacting with the remote endpoints.
+---
 ## License
 
 MIT (or your chosen license)
