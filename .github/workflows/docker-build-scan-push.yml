@@ -7,12 +7,11 @@ on:
     branches: [main]
 
 jobs:
-  - build-scan-push-kettle:
+  build-scan-push-kettle:
     runs-on: ubuntu-latest
     env:
       REGISTRY: docker.io
       COMMIT_TAG: ${{ github.sha }}
-      IS_MAIN: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,7 +28,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build, scan, and push artisanal-kettle
       - name: Build kettle image
         uses: docker/build-push-action@v5
         with:
@@ -63,12 +61,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_REGISTRY }}/artisanal-kettle:latest
 
-  - build-scan-push-tea:
+  build-scan-push-tea:
     runs-on: ubuntu-latest
     env:
       REGISTRY: docker.io
       COMMIT_TAG: ${{ github.sha }}
-      IS_MAIN: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -85,7 +82,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build, scan, and push artisanal-tea
       - name: Build tea image
         uses: docker/build-push-action@v5
         with:
