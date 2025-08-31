@@ -74,7 +74,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ github.repository }}-tea:latest
 
       - name: Scan tea image for vulnerabilities
-        uses: aquasecurity/trivy-action@v0.16.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           image-ref: ${{ env.REGISTRY }}/${{ github.repository }}-tea:${{ env.COMMIT_TAG }}
 
