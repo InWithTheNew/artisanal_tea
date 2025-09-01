@@ -17,13 +17,13 @@ import (
 )
 
 // Send dispatches a command to a service, using either SSH or Kubernetes exec depending on the service type.
-func Send(svc ServiceModel, cmd string) (string, error) {
+func Send(svc ServiceModel, cmd, submittingUser string) (string, error) {
 
 	var response string
 	var err error
 
-	cmd = cleanCommand(cmd)
-	log.Printf("command submitted to %s: %s. Host: %s", svc.GetName(), cmd, svc.GetServer())
+	cmd = sanitiseCommand(cmd)
+	log.Printf("%s sent command to %s: %s. Host: %s", submittingUser, svc.GetName(), cmd, svc.GetServer())
 
 	switch svc.GetKubernetesCheck() {
 	case true:
@@ -138,12 +138,13 @@ func SendArtisanCommandToServer(host string, cmd string) (string, error) {
 }
 
 // Try to format the cmd input. Prevent cmd injection, add or dedup 'php artisan'.
-func cleanCommand(cmd string) string {
+func sanitiseCommand(cmd string) string {
 
 	strings.ToLower(cmd)
 	// Some attempt at preventing cmd injection.
 	cleansedCommand := strings.Split(cmd, ";")[0]
 	cleansedCommand = strings.Split(cleansedCommand, "&")[0]
+	cleansedCommand = strings.Split(cleansedCommand, "|")[0]
 
 	if strings.Contains(cleansedCommand, "php artisan") {
 		cleansedCommand = strings.Replace(cleansedCommand, "php artisan ", "", -1)

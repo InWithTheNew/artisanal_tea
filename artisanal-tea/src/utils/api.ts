@@ -2,6 +2,7 @@
 export interface SubmitPayload {
   Name: string;
   Command: string;
+  User: string;
 }
 
 export async function submitFormData(payload: SubmitPayload): Promise<Response> {

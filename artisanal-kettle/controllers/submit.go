@@ -12,6 +12,7 @@ import (
 type payload struct {
 	Name    string // Name of the service to target
 	Command string // Command to execute on the service
+	User    string // User who has submitted the command
 }
 
 // SubmitHandler godoc
@@ -48,7 +49,7 @@ func SubmitHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Submit the command to the service layer
-	response, err := service.SubmitCommand(p.Name, p.Command)
+	response, err := service.SubmitCommand(p.Name, p.Command, p.User)
 	if err != nil {
 		// If the command fails, return a 500 error with details
 		w.WriteHeader(http.StatusInternalServerError)

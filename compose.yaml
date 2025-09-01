@@ -20,8 +20,6 @@ services:
       SSH_USER: kettle
       # SSH_KEY should be set here or via a .env file (use a real key in production)
       SSH_KEY: "YOUR_PRIVATE_KEY_HERE"
-    ports:
-      - "8080:8080"
     restart: unless-stopped
 
   tea:
@@ -29,9 +27,9 @@ services:
       context: ./artisanal-tea
       dockerfile: Containerfile
       args:
-        REACT_APP_BACKEND_URL: http://127.0.0.1:8080
+        REACT_APP_BACKEND_URL: http://localhost:8080
         REACT_APP_LIST_APPS_PATH: /list/services
-        REACT_APP_SUBMIT_URL: http://127.0.0.1:8080
+        REACT_APP_SUBMIT_URL: http://localhost:8080
         REACT_APP_SUBMIT_PATH: /submit
     container_name: tea
     depends_on:

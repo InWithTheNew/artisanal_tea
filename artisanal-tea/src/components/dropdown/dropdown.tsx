@@ -16,6 +16,7 @@ export interface DropdownProps {
 export function Dropdown({ placeholder = 'Select...', options, value, onSelect }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  options = options ?? [];
 
   useEffect(() => {
     if (!open) return;
