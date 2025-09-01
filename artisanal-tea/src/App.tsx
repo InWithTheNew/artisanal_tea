@@ -13,7 +13,10 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const APP_URL = `${BACKEND_URL}${process.env.REACT_APP_LIST_APPS_PATH || ''}`;
 
 function App() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [appOptions, setAppOptions] = useState<DropdownOption[]>([]);
   const [selectedApp, setSelectedApp] = useState('');
   const [command, setCommand] = useState('');
@@ -66,6 +69,7 @@ function App() {
             if (token) {
               const decoded: any = jwtDecode(token);
               setUser(decoded);
+              localStorage.setItem('user', JSON.stringify(decoded));
             }
           }}
           onError={() => {
@@ -79,7 +83,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Navbar user={user} onLogout={() => { googleLogout(); setUser(null); }} />
+        <Navbar user={user} onLogout={() => {
+          googleLogout();
+          setUser(null);
+          localStorage.removeItem('user');
+        }} />
         <Dropdown
           placeholder="App"
           options={appOptions}
