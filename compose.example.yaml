@@ -28,13 +28,14 @@ services:
     build:
       context: ./artisanal-tea
       dockerfile: Containerfile
+      args:
+        REACT_APP_BACKEND_URL: http://127.0.0.1:8080
+        REACT_APP_LIST_APPS_PATH: /list/services
+        REACT_APP_SUBMIT_URL: http://127.0.0.1:8080
+        REACT_APP_SUBMIT_PATH: /submit
     container_name: tea
     depends_on:
       - kettle
-    environment:
-      REACT_APP_BACKEND_URL: http://kettle:8080
-      REACT_APP_LIST_APPS_PATH: /list/services
-      REACT_APP_SUBMIT_PATH: /submit
     ports:
       - "3000:80"
     restart: unless-stopped
