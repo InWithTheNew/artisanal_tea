@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { CommandBarField } from './components/command-bar/commandbar';
 import { Dropdown, DropdownOption } from './components/dropdown/dropdown';
 import { Navbar } from './components/navbar/navbar';
@@ -9,11 +10,9 @@ import { fetchDropdownOptions } from './utils/dropdownApi';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const APP_URL = `${BACKEND_URL}${process.env.REACT_APP_LIST_APPS_PATH || ''}`; 
-const ENV_URL = `${BACKEND_URL}${process.env.REACT_APP_LIST_ENVS_PATH || ''}`;
-const SUBMIT_URL = `${BACKEND_URL}${process.env.REACT_APP_SUBMIT_PATH || ''}`;
-
 
 function App() {
+  const [user, setUser] = useState<any>(null);
   const [appOptions, setAppOptions] = useState<DropdownOption[]>([]);
   const [selectedApp, setSelectedApp] = useState('');
   const [command, setCommand] = useState('');
@@ -56,10 +55,27 @@ function App() {
     }
   };
 
+  if (!user) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            setUser(credentialResponse);
+            // Optionally: send credentialResponse.credential (the JWT) to your backend for verification
+          }}
+          onError={() => {
+            alert('Login Failed');
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <Navbar />
+        <Button onClick={() => { googleLogout(); setUser(null); }} type="button">Logout</Button>
         <Dropdown
           placeholder="App"
           options={appOptions}
