@@ -17,13 +17,13 @@ import (
 )
 
 // Send dispatches a command to a service, using either SSH or Kubernetes exec depending on the service type.
-func Send(svc ServiceModel, cmd string) (string, error) {
+func Send(svc ServiceModel, cmd, submittingUser string) (string, error) {
 
 	var response string
 	var err error
 
 	cmd = sanitiseCommand(cmd)
-	log.Printf("command submitted to %s: %s. Host: %s", svc.GetName(), cmd, svc.GetServer())
+	log.Printf("%s sent command to %s: %s. Host: %s", submittingUser, svc.GetName(), cmd, svc.GetServer())
 
 	switch svc.GetKubernetesCheck() {
 	case true:

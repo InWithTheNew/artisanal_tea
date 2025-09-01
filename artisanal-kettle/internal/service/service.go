@@ -65,20 +65,20 @@ func (s *Service) DeleteServiceConfig() error {
 }
 
 // SubmitCommand retrieves a service by name and sends a command to it using the action package.
-func SubmitCommand(svcName, cmd string) (string, error) {
+func SubmitCommand(svcName, cmd, submittingUser string) (string, error) {
 
 	svc, err := GetService(svcName)
 	if err != nil {
 		return "", err
 	}
 
-	resp, err := command.Send(svc, cmd)
+	resp, err := command.Send(svc, cmd, submittingUser)
 
 	if err != nil {
 		return "", err
 	}
 
-	log.Printf("command send to service %s: %s", svcName, cmd)
+	log.Printf("user %s sent command to service %s: %s", submittingUser, svcName, cmd)
 
 	return resp, nil
 }

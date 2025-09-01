@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   padding: 0 2rem;
+  justify-content: space-between;
 }
 
 .navbar-logo {
@@ -12,6 +13,60 @@
   display: block;
   pointer-events: none;
 }
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-greet {
+  font-weight: 500;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.user-avatar-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  min-width: 120px;
+  z-index: 10;
+  padding: 0.25rem 0;
+  margin: 0;
+  list-style: none;
+}
+.user-dropdown-menu li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: rgb(40, 40, 40);
+}
+.user-dropdown-menu li:hover {
+  background: #a2a2a2;
+  color: rgb(40, 40, 40);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .navbar-logo {
     animation: App-logo-spin infinite 10s linear;
