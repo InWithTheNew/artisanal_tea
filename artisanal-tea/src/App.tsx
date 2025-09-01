@@ -62,20 +62,50 @@ function App() {
 
   if (!user) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
-        <GoogleLogin
-          onSuccess={credentialResponse => {
-            const token = credentialResponse.credential;
-            if (token) {
-              const decoded: any = jwtDecode(token);
-              setUser(decoded);
-              localStorage.setItem('user', JSON.stringify(decoded));
-            }
-          }}
-          onError={() => {
-            alert('Login Failed');
-          }}
-        />
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
+      }}>
+        <div style={{
+          background: '#fff',
+          padding: '2.5rem 2rem',
+          borderRadius: '16px',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxWidth: 340,
+        }}>
+          <img src={require('./logo.svg').default} alt="Artisanal Tea" style={{ width: 72, marginBottom: 24 }} />
+          <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: '#222' }}>Welcome to Artisanal Tea</h1>
+          <p style={{ color: '#555', margin: '16px 0 32px', textAlign: 'center' }}>
+            Please sign in with Google to continue.
+          </p>
+          <GoogleLogin
+            onSuccess={credentialResponse => {
+              const token = credentialResponse.credential;
+              if (token) {
+                const decoded: any = jwtDecode(token);
+                setUser(decoded);
+                localStorage.setItem('user', JSON.stringify(decoded));
+              }
+            }}
+            onError={() => {
+              alert('Login Failed');
+            }}
+            width="260"
+            theme="filled_blue"
+            text="signin_with"
+            shape="pill"
+          />
+        </div>
+        <div style={{ marginTop: 32, color: '#888', fontSize: 14 }}>
+          &copy; {new Date().getFullYear()} Artisanal Tea
+        </div>
       </div>
     );
   }
@@ -88,34 +118,36 @@ function App() {
           setUser(null);
           localStorage.removeItem('user');
         }} />
-        <Dropdown
-          placeholder="App"
-          options={appOptions}
-          value={selectedApp}
-          onSelect={setSelectedApp}
-        />
-        <CommandBarField value={command} onChange={setCommand} />
-        <Button onClick={handleSubmit} type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit'}
-        </Button>
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        {response && (
-          <div style={{
-            background: '#222',
-            color: '#fff',
-            padding: '1rem',
-            marginTop: '1rem',
-            borderRadius: '6px',
-            maxWidth: 600,
-            wordBreak: 'break-word',
-            whiteSpace: 'pre-wrap', // ensures wrapping
-            overflowX: 'auto',
-          }}>
-            <strong>Response:</strong>
-            <div style={{whiteSpace: 'pre-wrap'}}>{response}</div>
-          </div>
-        )}
-        {success && <div style={{ color: 'green' }}>Submitted successfully!</div>}
+        <div className="main-card">
+          <Dropdown
+            placeholder="App"
+            options={appOptions}
+            value={selectedApp}
+            onSelect={setSelectedApp}
+          />
+          <CommandBarField value={command} onChange={setCommand} />
+          <Button onClick={handleSubmit} type="submit" disabled={loading}>
+            {loading ? 'Submitting...' : 'Submit'}
+          </Button>
+          {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
+          {response && (
+            <div style={{
+              background: '#222',
+              color: '#fff',
+              padding: '1rem',
+              marginTop: '1rem',
+              borderRadius: '6px',
+              maxWidth: 600,
+              wordBreak: 'break-word',
+              whiteSpace: 'pre-wrap',
+              overflowX: 'auto',
+            }}>
+              <strong>Response:</strong>
+              <div style={{whiteSpace: 'pre-wrap'}}>{response}</div>
+            </div>
+          )}
+          {success && <div style={{ color: 'green', marginTop: 12 }}>Submitted successfully!</div>}
+        </div>
       </header>
     </div>
   );
