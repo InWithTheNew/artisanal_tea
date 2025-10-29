@@ -16,3 +16,4 @@ export async function submitFormData(payload: SubmitPayload): Promise<Response> 
     body: JSON.stringify(payload),
   });
 }
+

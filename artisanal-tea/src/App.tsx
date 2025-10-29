@@ -113,11 +113,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Navbar user={user} onLogout={() => {
-          googleLogout();
-          setUser(null);
-          localStorage.removeItem('user');
-        }} />
+        <Navbar
+          showAdminButton={true} 
+          user={user} 
+          onLogout={() => {
+            googleLogout();
+            setUser(null);
+            localStorage.removeItem('user');
+          }}
+          onAdminClick={() => console.log('Admin Clicked')} />
         <div className="main-card">
           <Dropdown
             placeholder="App"
